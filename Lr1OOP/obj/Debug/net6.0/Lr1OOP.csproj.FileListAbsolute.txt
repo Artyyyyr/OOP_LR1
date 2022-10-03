@@ -1,0 +1,15 @@
+D:\RiderProgect\Lr1OOP\Lr1OOP\obj\Debug\net6.0\Lr1OOP.csproj.AssemblyReference.cache
+D:\RiderProgect\Lr1OOP\Lr1OOP\obj\Debug\net6.0\Lr1OOP.GeneratedMSBuildEditorConfig.editorconfig
+D:\RiderProgect\Lr1OOP\Lr1OOP\obj\Debug\net6.0\Lr1OOP.AssemblyInfoInputs.cache
+D:\RiderProgect\Lr1OOP\Lr1OOP\obj\Debug\net6.0\Lr1OOP.AssemblyInfo.cs
+D:\RiderProgect\Lr1OOP\Lr1OOP\obj\Debug\net6.0\Lr1OOP.csproj.CoreCompileInputs.cache
+D:\RiderProgect\Lr1OOP\Lr1OOP\bin\Debug\net6.0\Lr1OOP.exe
+D:\RiderProgect\Lr1OOP\Lr1OOP\bin\Debug\net6.0\Lr1OOP.deps.json
+D:\RiderProgect\Lr1OOP\Lr1OOP\bin\Debug\net6.0\Lr1OOP.runtimeconfig.json
+D:\RiderProgect\Lr1OOP\Lr1OOP\bin\Debug\net6.0\Lr1OOP.dll
+D:\RiderProgect\Lr1OOP\Lr1OOP\bin\Debug\net6.0\Lr1OOP.pdb
+D:\RiderProgect\Lr1OOP\Lr1OOP\obj\Debug\net6.0\Lr1OOP.dll
+D:\RiderProgect\Lr1OOP\Lr1OOP\obj\Debug\net6.0\refint\Lr1OOP.dll
+D:\RiderProgect\Lr1OOP\Lr1OOP\obj\Debug\net6.0\Lr1OOP.pdb
+D:\RiderProgect\Lr1OOP\Lr1OOP\obj\Debug\net6.0\Lr1OOP.genruntimeconfig.cache
+D:\RiderProgect\Lr1OOP\Lr1OOP\obj\Debug\net6.0\ref\Lr1OOP.dll
