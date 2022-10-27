@@ -17,13 +17,126 @@
             }
             
         }
-        public class Gameacount
+
+        public class GoodWinerAccount : GameAccount
         {
-            private string UserName = "No name";
-            private int CurrentRating = 1;
+            public GoodWinerAccount(string UserName, int CurretRating) : base(UserName, CurretRating)
+            {
+                base.UserName = this.UserName;
+                base.CurrentRating = this.CurrentRating;
+            }
+
+            public override void WinGame(string opponentname, int Rating, int index)
+            {
+                if (Rating > 0)
+                {
+                    CurrentRating = CurrentRating + 2 * Rating;
+                    GameRecord a = new GameRecord(index, 1, opponentname, 2 * Rating);
+                    record.Add(a);
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+            }
+        }
+        public class GoodLooserAccount : GameAccount
+        {
+            public GoodLooserAccount(string UserName, int CurretRating) : base(UserName, CurretRating)
+            {
+                base.UserName = this.UserName;
+                base.CurrentRating = this.CurrentRating;
+            }
+
+            public override void LoseGame(string opponentname, int Rating, int index)
+            {
+                if (Rating > 0 & CurrentRating - Rating > 0)
+                {
+                    CurrentRating = CurrentRating - Rating/2;
+                    GameRecord a = new GameRecord(index, 0, opponentname, Rating/2);
+                    record.Add(a);
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+            }
+        }
+        public class TrainAccount : GameAccount
+        {
+            public TrainAccount(string UserName, int CurretRating) : base(UserName, CurretRating)
+            {
+                base.UserName = this.UserName;
+                base.CurrentRating = this.CurrentRating;
+            }
+            public override void LoseGame(string opponentname, int Rating, int index)
+            {
+                if (Rating > 0 & CurrentRating - Rating > 0)
+                {
+                    CurrentRating = CurrentRating - 0;
+                    GameRecord a = new GameRecord(index, 0, opponentname, 0);
+                    record.Add(a);
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+            }
+            public override void WinGame(string opponentname, int Rating, int index)
+            {
+                if (Rating > 0)
+                {
+                    CurrentRating = CurrentRating + 0;
+                    GameRecord a = new GameRecord(index, 1, opponentname, 0);
+                    record.Add(a);
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+            }
+        }
+        public class PremiumAccount : GameAccount
+        {
+            public PremiumAccount(string UserName, int CurretRating) : base(UserName, CurretRating)
+            {
+                base.UserName = this.UserName;
+                base.CurrentRating = this.CurrentRating;
+            }
+            public override void WinGame(string opponentname, int Rating, int index)
+            {
+                if (Rating > 0)
+                {
+                    CurrentRating = CurrentRating + 2 * Rating;
+                    GameRecord a = new GameRecord(index, 1, opponentname, 2 * Rating);
+                    record.Add(a);
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+            }
+            public override void LoseGame(string opponentname, int Rating, int index)
+            {
+                if (Rating > 0 & CurrentRating - Rating > 0)
+                {
+                    CurrentRating = CurrentRating - Rating/2;
+                    GameRecord a = new GameRecord(index, 0, opponentname, Rating/2);
+                    record.Add(a);
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+            }
+        }
+        public class GameAccount
+        {
+            protected string UserName = "No name";
+            protected int CurrentRating = 1;
             private int GamesCount = 0;
 
-            private List<GameRecord> record = new List<GameRecord>();
+            protected List<GameRecord> record = new List<GameRecord>();
 
             public string GetUserName()
             {
@@ -45,13 +158,13 @@
                 this.GamesCount = GamesCount;
             }
 
-            public Gameacount(string UserName, int CurretRating)
+            public GameAccount(string UserName, int CurretRating)
             {
                 this.UserName = UserName;
                 this.CurrentRating = CurretRating;
             }
 
-            public void WinGame(string opponentname, int Rating, int index)
+            public virtual void WinGame(string opponentname, int Rating, int index)
             {
                 if (Rating > 0)
                 {
@@ -64,7 +177,7 @@
                     Console.WriteLine("Error");
                 }
             }
-            public void LoseGame(string opponentname, int Rating, int index)
+            public virtual void LoseGame(string opponentname, int Rating, int index)
             {
                 if (Rating > 0 & CurrentRating - Rating > 0)
                 {
@@ -104,7 +217,7 @@
             private List<string> L = new List<string>();
             private List<int> rate = new List<int>();
 
-            public void game(Gameacount winner, Gameacount loser, int Rate)
+            public void game(GameAccount winner, GameAccount loser, int Rate)
             {
                 if (Rate > 0 & loser.GetCurrentRating() - Rate > 0)
                 {
@@ -133,43 +246,113 @@
                 }
             }
         }
-
         static void Main(string[] args)
         {
-            Gameacount Vasya = new Gameacount("Vasiliy", 100);
-            Gameacount Lera = new Gameacount("Lera", 100);
+            GoodLooserAccount Vasya = new GoodLooserAccount("Vasiliy", 100);
+            GoodWinerAccount Lera = new GoodWinerAccount("Lera", 100);
+            TrainAccount Artyyr = new TrainAccount("Artyyr", 100);
+            PremiumAccount Bodia = new PremiumAccount("Bogdan", 1000);
+            
             Game game = new Game();
-
-            Game d2 = new Game();
 
             Console.WriteLine("Start");
             Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
             Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
+            
+            game.game(Lera, Artyyr, 10);
+            game.GetStats();
+            Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
+            Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
 
             game.game(Lera, Vasya, 20);
             game.GetStats();
             Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
             Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
+            
+            game.game(Artyyr, Vasya, 10);
+            game.GetStats();
+            Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
+            Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
             
             game.game(Vasya, Lera, 5);
             game.GetStats();
             Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
             Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
+            
+            game.game(Artyyr, Lera, 10);
+            game.GetStats();
+            Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
+            Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
             
             game.game(Vasya, Lera, 5);
             game.GetStats();
             Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
             Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
             
             game.game(Lera, Vasya, 85);
             game.GetStats();
             Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
             Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
+            
+            game.game(Artyyr, Lera, 10);
+            game.GetStats();
+            Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
+            Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
+            
+            game.game(Bodia, Lera, 10);
+            game.GetStats();
+            Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
+            Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
+            
+            game.game(Bodia, Artyyr, 10);
+            game.GetStats();
+            Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
+            Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
+            
+            game.game(Bodia, Vasya, 10);
+            game.GetStats();
+            Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
+            Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
+            
+            game.game(Artyyr, Bodia, 100);
+            game.GetStats();
+            Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
+            Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
+            Console.WriteLine("Artyyr: {0}", Artyyr.GetCurrentRating());
+            Console.WriteLine("Bodia: {0}", Bodia.GetCurrentRating());
             
             Console.WriteLine("Vasya");
             Vasya.GetStats();
             Console.WriteLine("Lera");
             Lera.GetStats();
+            Console.WriteLine("Artyyr");
+            Artyyr.GetStats();
+            Console.WriteLine("Bodia");
+            Bodia.GetStats();
         }
     }
 }
