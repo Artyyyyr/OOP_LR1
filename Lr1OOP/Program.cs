@@ -140,6 +140,8 @@
             Gameacount Lera = new Gameacount("Lera", 100);
             Game game = new Game();
 
+            Game d2 = new Game();
+
             Console.WriteLine("Start");
             Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
             Console.WriteLine("Vasay: {0}", Vasya.GetCurrentRating());
