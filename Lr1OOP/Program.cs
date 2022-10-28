@@ -26,12 +26,12 @@
                 base.CurrentRating = this.CurrentRating;
             }
 
-            public override void WinGame(string opponentname, int Rating, int index)
+            public override void WinGame(string opponentname, BaseGame game, int index)
             {
-                if (Rating > 0)
+                if (game.GetRate() >= 0)
                 {
-                    CurrentRating = CurrentRating + 2 * Rating;
-                    GameRecord a = new GameRecord(index, 1, opponentname, 2 * Rating);
+                    CurrentRating = CurrentRating + 2 * game.GetRate();
+                    GameRecord a = new GameRecord(index, 1, opponentname, 2 * game.GetRate());
                     record.Add(a);
                 }
                 else
@@ -48,12 +48,12 @@
                 base.CurrentRating = this.CurrentRating;
             }
 
-            public override void LoseGame(string opponentname, int Rating, int index)
+            public override void LoseGame(string opponentname, BaseGame game, int index)
             {
-                if (Rating > 0 & CurrentRating - Rating > 0)
+                if (game.GetRate() >= 0 & CurrentRating - game.GetRate() >= 0)
                 {
-                    CurrentRating = CurrentRating - Rating/2;
-                    GameRecord a = new GameRecord(index, 0, opponentname, Rating/2);
+                    CurrentRating = CurrentRating - game.GetRate()/2;
+                    GameRecord a = new GameRecord(index, 0, opponentname, game.GetRate()/2);
                     record.Add(a);
                 }
                 else
@@ -69,9 +69,9 @@
                 base.UserName = this.UserName;
                 base.CurrentRating = this.CurrentRating;
             }
-            public override void LoseGame(string opponentname, int Rating, int index)
+            public override void LoseGame(string opponentname, BaseGame game, int index)
             {
-                if (Rating > 0 & CurrentRating - Rating > 0)
+                if (game.GetRate() >= 0 & CurrentRating - game.GetRate() >= 0)
                 {
                     CurrentRating = CurrentRating - 0;
                     GameRecord a = new GameRecord(index, 0, opponentname, 0);
@@ -82,9 +82,9 @@
                     Console.WriteLine("Error");
                 }
             }
-            public override void WinGame(string opponentname, int Rating, int index)
+            public override void WinGame(string opponentname, BaseGame game, int index)
             {
-                if (Rating > 0)
+                if (game.GetRate() >= 0)
                 {
                     CurrentRating = CurrentRating + 0;
                     GameRecord a = new GameRecord(index, 1, opponentname, 0);
@@ -103,12 +103,12 @@
                 base.UserName = this.UserName;
                 base.CurrentRating = this.CurrentRating;
             }
-            public override void WinGame(string opponentname, int Rating, int index)
+            public override void WinGame(string opponentname, BaseGame game, int index)
             {
-                if (Rating > 0)
+                if (game.GetRate() >= 0)
                 {
-                    CurrentRating = CurrentRating + 2 * Rating;
-                    GameRecord a = new GameRecord(index, 1, opponentname, 2 * Rating);
+                    CurrentRating = CurrentRating + 2 * game.GetRate();
+                    GameRecord a = new GameRecord(index, 1, opponentname, 2 * game.GetRate());
                     record.Add(a);
                 }
                 else
@@ -116,12 +116,12 @@
                     Console.WriteLine("Error");
                 }
             }
-            public override void LoseGame(string opponentname, int Rating, int index)
+            public override void LoseGame(string opponentname, BaseGame game, int index)
             {
-                if (Rating > 0 & CurrentRating - Rating > 0)
+                if (game.GetRate() >= 0 & CurrentRating - game.GetRate() >= 0)
                 {
-                    CurrentRating = CurrentRating - Rating/2;
-                    GameRecord a = new GameRecord(index, 0, opponentname, Rating/2);
+                    CurrentRating = CurrentRating - game.GetRate()/2;
+                    GameRecord a = new GameRecord(index, 0, opponentname, game.GetRate()/2);
                     record.Add(a);
                 }
                 else
@@ -164,12 +164,12 @@
                 this.CurrentRating = CurretRating;
             }
 
-            public virtual void WinGame(string opponentname, int Rating, int index)
+            public virtual void WinGame(string opponentname, BaseGame game, int index)
             {
-                if (Rating > 0)
+                if (game.GetRate() >= 0)
                 {
-                    CurrentRating = CurrentRating + Rating;
-                    GameRecord a = new GameRecord(index, 1, opponentname, Rating);
+                    CurrentRating = CurrentRating + game.GetRate();
+                    GameRecord a = new GameRecord(index, 1, opponentname, game.GetRate());
                     record.Add(a);
                 }
                 else
@@ -177,12 +177,12 @@
                     Console.WriteLine("Error");
                 }
             }
-            public virtual void LoseGame(string opponentname, int Rating, int index)
+            public virtual void LoseGame(string opponentname, BaseGame game, int index)
             {
-                if (Rating > 0 & CurrentRating - Rating > 0)
+                if (game.GetRate() >= 0 & CurrentRating - game.GetRate() >= 0)
                 {
-                    CurrentRating = CurrentRating - Rating;
-                    GameRecord a = new GameRecord(index, 0, opponentname, Rating);
+                    CurrentRating = CurrentRating - game.GetRate();
+                    GameRecord a = new GameRecord(index, 0, opponentname, game.GetRate());
                     record.Add(a);
                 }
                 else
@@ -209,24 +209,52 @@
             }
         }
 
-        public class Game
+        public abstract class BaseGame
         {
-            private int gamecount = 0;
-            private List<int> index = new List<int>();
-            private List<string> W = new List<string>();
-            private List<string> L = new List<string>();
-            private List<int> rate = new List<int>();
+            public virtual int GetRate()
+            {
+                return rate[rate.Count-1];
+            }
 
-            public void game(GameAccount winner, GameAccount loser, int Rate)
+            public abstract string GameType();
+            protected int gamecount = 0;
+            protected List<int> index = new List<int>();
+            protected List<string> W = new List<string>();
+            protected List<string> L = new List<string>();
+            protected List<int> rate = new List<int>();
+
+            public abstract void game(GameAccount winner, GameAccount loser, int Rate);
+
+            public void GetStats()
+            {
+                for (int i = 0; i < index.Count; i++)
+                {
+                    Console.WriteLine("Game {0}. Lose: {1}, win: {2}, rate: {3}points", index[i], L[i], W[i], rate[i]);
+                }
+            }
+        }
+        
+        public class TrainGame : BaseGame
+        {
+            public override string GameType() {
+                return "Base";
+            }
+
+            public override int GetRate()
+            {
+                return 0;
+            }
+
+            public override void game(GameAccount winner, GameAccount loser, int Rate)
             {
                 if (Rate > 0 & loser.GetCurrentRating() - Rate > 0)
                 {
-                    winner.WinGame(loser.GetUserName(), Rate, gamecount);
-                    loser.LoseGame(winner.GetUserName(), Rate, gamecount);
+                    rate.Add(Rate);
+                    winner.WinGame(loser.GetUserName(), this, gamecount);
+                    loser.LoseGame(winner.GetUserName(), this, gamecount);
                     index.Add(gamecount);
                     W.Add(winner.GetUserName());
                     L.Add(loser.GetUserName());
-                    rate.Add(Rate);
                     winner.SetGamesCount(winner.GetGamesCount() + 1);
                     loser.SetGamesCount(loser.GetGamesCount() + 1);
                     gamecount = gamecount + 1;
@@ -237,13 +265,81 @@
                 }
 
             }
-
-            public void GetStats()
+        }
+        
+        public class OnlyWinGame : BaseGame
+        {
+            public override string GameType()
             {
-                for (int i = 0; i < index.Count; i++)
+                return "Only_Win";
+            }
+
+            public override void game(GameAccount winner, GameAccount loser, int Rate)
+            {
+                if (Rate > 0 & loser.GetCurrentRating() - Rate > 0)
                 {
-                    Console.WriteLine("Game {0}. Lose: {1}, win: {2}, rate: {3}points", index[i], L[i], W[i], rate[i]);
+                    rate.Add(Rate);
+                    winner.WinGame(loser.GetUserName(), this, gamecount);
+                    rate[rate.Count - 1] = 0;
+                    loser.LoseGame(winner.GetUserName(), this, gamecount);
+                    rate[rate.Count - 1] = Rate;
+                    index.Add(gamecount);
+                    W.Add(winner.GetUserName());
+                    L.Add(loser.GetUserName());
+                    winner.SetGamesCount(winner.GetGamesCount() + 1);
+                    loser.SetGamesCount(loser.GetGamesCount() + 1);
+                    gamecount = gamecount + 1;
                 }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+
+            }
+        }
+
+        public class SimpleGame : BaseGame
+        {
+            public override string GameType()
+            {
+                return "Simple";
+            }
+            
+            public override void game(GameAccount winner, GameAccount loser, int Rate)
+            {
+                if (Rate > 0 & loser.GetCurrentRating() - Rate > 0)
+                {
+                    rate.Add(Rate);
+                    winner.WinGame(loser.GetUserName(), this, gamecount);
+                    loser.LoseGame(winner.GetUserName(), this, gamecount);
+                    index.Add(gamecount);
+                    W.Add(winner.GetUserName());
+                    L.Add(loser.GetUserName());
+                    winner.SetGamesCount(winner.GetGamesCount() + 1);
+                    loser.SetGamesCount(loser.GetGamesCount() + 1);
+                    gamecount = gamecount + 1;
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+
+            }
+        }
+        
+        public class GetGame
+        {
+            public BaseGame GetSimple()
+            {
+                return new SimpleGame();
+            }
+            public BaseGame GetTrain()
+            {
+                return new TrainGame();
+            }
+            public BaseGame GetOnlyWin()
+            {
+                return new OnlyWinGame();
             }
         }
         static void Main(string[] args)
@@ -252,8 +348,11 @@
             GoodWinerAccount Lera = new GoodWinerAccount("Lera", 100);
             TrainAccount Artyyr = new TrainAccount("Artyyr", 100);
             PremiumAccount Bodia = new PremiumAccount("Bogdan", 1000);
-            
-            Game game = new Game();
+
+            GetGame games = new GetGame();
+            var game = games.GetOnlyWin();
+
+            Console.WriteLine("Game type: {0}", game.GameType());
 
             Console.WriteLine("Start");
             Console.WriteLine("Lera: {0}", Lera.GetCurrentRating());
