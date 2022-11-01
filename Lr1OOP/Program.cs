@@ -209,27 +209,40 @@
             }
         }
 
+        public class recordg
+        {
+            public int index;
+            public string W;
+            public string L;
+            public int rate;
+            
+            public recordg (int index, string W, string L, int rate)
+            {
+                this.index = index;
+                this.W = W;
+                this.L = L;
+                this.rate = rate;
+            }
+        }
+
         public abstract class BaseGame
         {
             public virtual int GetRate()
             {
-                return rate[rate.Count-1];
+                return story[story.Count - 1].rate;
             }
 
             public abstract string GameType();
             protected int gamecount = 0;
-            protected List<int> index = new List<int>();
-            protected List<string> W = new List<string>();
-            protected List<string> L = new List<string>();
-            protected List<int> rate = new List<int>();
+            protected List<recordg> story = new List<recordg>();
 
             public abstract void game(GameAccount winner, GameAccount loser, int Rate);
 
             public void GetStats()
             {
-                for (int i = 0; i < index.Count; i++)
+                for (int i = 0; i < story.Count; i++)
                 {
-                    Console.WriteLine("Game {0}. Lose: {1}, win: {2}, rate: {3}points", index[i], L[i], W[i], rate[i]);
+                    Console.WriteLine("Game {0}. Lose: {1}, win: {2}, rate: {3}points", story[i].index, story[i].L, story[i].W, story[i].rate);
                 }
             }
         }
@@ -249,12 +262,10 @@
             {
                 if (Rate > 0 & loser.GetCurrentRating() - Rate > 0)
                 {
-                    rate.Add(Rate);
+                    recordg n = new recordg(gamecount, winner.GetUserName(), loser.GetUserName(), Rate);
+                    story.Add(n);
                     winner.WinGame(loser.GetUserName(), this, gamecount);
                     loser.LoseGame(winner.GetUserName(), this, gamecount);
-                    index.Add(gamecount);
-                    W.Add(winner.GetUserName());
-                    L.Add(loser.GetUserName());
                     winner.SetGamesCount(winner.GetGamesCount() + 1);
                     loser.SetGamesCount(loser.GetGamesCount() + 1);
                     gamecount = gamecount + 1;
@@ -278,14 +289,12 @@
             {
                 if (Rate > 0 & loser.GetCurrentRating() - Rate > 0)
                 {
-                    rate.Add(Rate);
+                    recordg n = new recordg(gamecount, winner.GetUserName(), loser.GetUserName(), Rate);
+                    story.Add(n);
                     winner.WinGame(loser.GetUserName(), this, gamecount);
-                    rate[rate.Count - 1] = 0;
+                    story[story.Count - 1].rate = 0;
                     loser.LoseGame(winner.GetUserName(), this, gamecount);
-                    rate[rate.Count - 1] = Rate;
-                    index.Add(gamecount);
-                    W.Add(winner.GetUserName());
-                    L.Add(loser.GetUserName());
+                    story[story.Count - 1].rate = Rate;
                     winner.SetGamesCount(winner.GetGamesCount() + 1);
                     loser.SetGamesCount(loser.GetGamesCount() + 1);
                     gamecount = gamecount + 1;
@@ -309,12 +318,10 @@
             {
                 if (Rate > 0 & loser.GetCurrentRating() - Rate > 0)
                 {
-                    rate.Add(Rate);
+                    recordg n = new recordg(gamecount, winner.GetUserName(), loser.GetUserName(), Rate);
+                    story.Add(n);
                     winner.WinGame(loser.GetUserName(), this, gamecount);
                     loser.LoseGame(winner.GetUserName(), this, gamecount);
-                    index.Add(gamecount);
-                    W.Add(winner.GetUserName());
-                    L.Add(loser.GetUserName());
                     winner.SetGamesCount(winner.GetGamesCount() + 1);
                     loser.SetGamesCount(loser.GetGamesCount() + 1);
                     gamecount = gamecount + 1;
@@ -350,7 +357,7 @@
             PremiumAccount Bodia = new PremiumAccount("Bogdan", 1000);
 
             GetGame games = new GetGame();
-            var game = games.GetOnlyWin();
+            var game = games.GetSimple();
 
             Console.WriteLine("Game type: {0}", game.GameType());
 
